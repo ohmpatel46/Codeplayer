@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Codeplayer</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+    <script src="jquery-ui/jquery-ui.js"></script>
+        
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
+
+    <style type="text/css">
+    	body
+    	{
+    		margin:0;
+    	}
+    	#header
+    	{
+    		background-color: #EDEDED;
+    		height:30px;
+    		
+    	}
+    	#logo
+    	{
+    		float:left;
+    		font-weight: bold;
+    		font-family: "Times New Roman",sans-serif;
+    		padding-top: 5px;
+
+    	}
+    	#buttonwrapper
+    	{
+    		position: relative;
+    		left:480px;
+    		width:300px;
+    		height:26px;
+    		
+   		}
+    	.button
+    	{
+			float:left;
+    		font-family: Helvetica,"Times New Roman",sans-serif;
+    		height:20px;
+    		border-right:none;
+    		border:1px solid #CCCCCC;
+    		font-size: 14px;
+    		padding-top: 3px;
+    		padding-left: 10px;
+    		padding-right: 10px;
+    		margin-top:2px;
+    	}
+    	.button:hover
+    	{
+    		background-color: #E4E4E4;
+    	}
+    	#html
+    	{
+    		border-top-left-radius: 4px;
+    		border-bottom-left-radius: 4px;
+    		
+    	}
+    	#output
+    	{
+    		border-bottom-right-radius: 4px;
+    		border-top-right-radius: 4px;
+    		
+    	}
+    	.active
+    	{
+    		background-color: hsl(215, 100%, 96%) !important;
+    	}
+    	.active:hover
+    	{
+    		background-color: #F5F9FF !important;
+    	}
+    	textarea
+    	{
+    		width:50%;
+    		height: 100%;
+    		resize:none;
+    		border-top:none;
+    		border-bottom:none;
+    		border-left:none;
+    	}
+    	.text
+    	{
+    		float:left;
+    	}
+    	iframe
+    	{
+    		border:none;
+    		float: left;
+    	}
+    	.hidden
+    	{
+    		display: none;
+    	}
+    </style>
+</head>
+<body>
+	<div id="header">
+		<div id="logo">
+			Codeplayer
+		</div>
+		<div id="buttonwrapper">
+			<div id="html" class="button active">HTML</div>
+			<div id="css" class="button">CSS</div>
+			<div id="js" class="button">JS</div>
+			<div id="output" class="button active">Output</div>
+		</div>
+	</div>
+	
+	<div id="bodywrapper">
+		<textarea id="htmltext" class="text"><p id="header">Hello world</p></textarea>
+		<textarea id="csstext" class="text hidden">#header{color:red;}</textarea>
+		<textarea id="jstext" class="text hidden">document.getElementById(header).innerHTML="this has been changed";</textarea>
+	</div>
+	
+	<iframe id="outputtext" class="text" src=""></iframe>
+	<script type="text/javascript">
+		var buttonid="";
+		var numberoftextareas;
+		function updateoutput()
+		{
+			$("iframe").contents().find("html").html("<html><head><style>" + $("#csstext").val() + "</style></head><body>" + $("#htmltext").val() + "</body></html>");  
+			
+			document.getElementById("outputtext").contentWindow.eval($("#jstext").val());
+		}
+		$(".button").click(function()
+		{
+			//updateoutput();
+			$(this).toggleClass("active");
+			buttonid = $(this).attr("id")+"text";
+			$("#"+buttonid).toggleClass("hidden");
+			numberoftextareas= 4-$(".hidden").length;
+			$(".text").width($(window).width()/numberoftextareas-10);	
+		});
+		
+		$(".text").height($(window).height()-$("#header").height()-10);
+		$(".text").width($(window).width()/2-10);	
+		updateoutput();
+		$("textarea").on("change keyup paste",function()
+		{
+		updateoutput();
+		});
+
+	</script>
+</body>
+</html>
+
+
+
+
+
+
